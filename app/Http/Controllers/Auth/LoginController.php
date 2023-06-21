@@ -42,15 +42,16 @@ class LoginController extends Controller
 
     public function redirectTo()
     {
-        if(Auth::user()->roles=='admin') {
+        if(Auth::user()->roles=='admin' || Auth::user()->roles=='superuser' && Auth::user()->email_verified==1) {
             $this->redirectTo = '/dashbord_admin';
             return $this->redirectTo;
         } elseif
-        (Auth::user()->roles=='user') {
+        (Auth::user()->roles=='user' && Auth::user()->email_verified==1) {
             $this->redirectTo = '/dashbord_user';
             return $this->redirectTo;
         }
-        return $this->redirectTo;
+        
+        
     }
 
     public function logout(Request $request) {

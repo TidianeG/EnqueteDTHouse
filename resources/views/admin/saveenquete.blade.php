@@ -24,17 +24,26 @@
                             </thead>
                             <tbody>
                                 @foreach($response as $i=>$res)
-                                    <tr class="tr-hover clickable-row" data-href="" style="cursor:pointer;">
-                                        <td>{{$res->id ?? ""}}</td>
-                                        <td>{{$res->id_string ?? ""}}</td>
-                                        <td>{{$res->title ?? ""}}</td>
-                                        <td>{{$res->description ?? ""}}</td>
-                                        <td>{{$res->url ?? ""}}</td>
+                                    <tr id="enq" class="tr-hover clickable-row" data-href="" style="cursor:pointer;">
+                                        <input type="hidden" id="id_enq" name="id_enq" value="{{$res->id}}"><td>{{$res->id ?? ""}}</td>
+                                        <input type="hidden" id="id_string" name="id_string" value="{{$res->id_string}}"><td>{{$res->id_string ?? ""}}</td>
+                                        <input type="hidden" id="title" name="title"><td>{{$res->title ?? ""}}</td>
+                                        <input type="hidden" id="description" name="description"><td>{{$res->description ?? ""}}</td>
+                                        <input type="hidden" id="url" name="url"><td>{{$res->url ?? ""}}</td>
+                                        <td><a href="#" class="btn btn-success">Créer new enquête   </a></td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
+
+                    <script>
+                        document.getElementById('enq').addEventListener('click', function(){
+                            let id_enq = document.getElementById('id_enq');
+                            alert(id_enq.value);
+                        });
+                        
+                    </script>
 
                 </div>
                 <div class="card card-authentication1 " style="width: 100%;">

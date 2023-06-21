@@ -48,6 +48,12 @@
   <link href="{{asset('css/app-style.css')}}" rel="stylesheet"/>
    
   <script src="https://kit.fontawesome.com/3b01b14772.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+  <link
+     rel="stylesheet"
+     href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
+   />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 </head>
 <body class="bg-theme bg-theme1" id="theme9">   
     <!-- Start wrapper-->
@@ -63,38 +69,55 @@
             </div>
             <ul class="sidebar-menu do-nicescrol">
                 <li class="sidebar-header">NAVIGATION PRINCIPALE</li>
-                <li>
-                    <a href="/home">
-                        <i class="fa fa-info"></i> <span>Infos générales</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{route('getClientsXPOKJDUEDDJH')}}">
-                        <i class="fa fa-user"></i> <span>Client</span>
-                    </a>
-                </li>
-
                 <li class="nav-item">
-                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                            <i class="fa fa-question"></i> Enquetes
+                    <a href="{{route('getEnquetesXPOKJDUEDDJH')}}">
+                        <i class="fa fa-question"></i> Enquetes
+                    </a>
+                        
+                </li>
+                @if(Auth::user()->roles=='superuser')
+                    <li>
+                        <a href="{{route('get_info_profile')}}">
+                            <i class="fa fa-info"></i> <span>Infos générales</span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            
-                            <li class="dropdown-divider"></li>
-                            <li class="dropdown-item"><a href="#"><i class="icon-envelope mr-2"></i> Listes des soumissions</a></li>
-                            <li class="dropdown-divider"></li>
-                            <li class="dropdown-item"><a href="{{route('getEnquetesXPOKJDUEDDJH')}}"><i class="icon-wallet mr-2"></i> Liste des enquetes</a></li>
-                            <li class="dropdown-divider"></li>
-                            
-                            
-                        </ul>
                     </li>
-                <li>
-                    <a href="{{route('get_securite')}}">
-                        <i class="fa fa-lock"></i> <span>Sécurité</span>
+                @endif
+                @if(Auth::user()->roles=='admin')
+                    <li>
+                        <a href="{{route('getClientsXPOKJDUEDDJH')}}">
+                            <i class="fa fa-user"></i> <span>Client</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('messagesend')}}">
+                            <i class="fa fa-envelope"></i> <span>Message</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('get_validateur')}}">
+                            <i class="fa fa-lock"></i> <span>Validateurs</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">
+                            <i class="fa fa-lock"></i> <span>Enquête distantes</span>
+                        </a>
+                    </li>
+
+                @endif
+                
+                
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fa fa-send"></i> <span>Soumissions</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{route('get_securite_admin')}}">
+                        <i class="fa fa-send"></i> <span>Sécurité</span>
+                    </a>
+                </li>
+                
                 <!--li class="sidebar-header">LABELS</li>
                 <li><a href="javaScript:void();"><i class="zmdi zmdi-coffee text-danger"></i> <span>Important</span></a></li>
                 <li><a href="javaScript:void();"><i class="zmdi zmdi-chart-donut text-success"></i> <span>Warning</span></a></li>
@@ -122,7 +145,6 @@
                 </ul>
                 
                 <ul class="navbar-nav align-items-center right-nav-link">
-                    
                     <li class="nav-item language">
                         <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown" href="javascript:void();"><i class="fa fa-flag"></i></a>
                         <ul class="dropdown-menu dropdown-menu-right">
@@ -183,7 +205,7 @@
 	<footer class="footer">
       <div class="container">
         <div class="text-center">
-          Copyright © 2018 Dashtreme Admin
+          Copyright © 2023 DThouse Enquete
         </div>
       </div>
     </footer>

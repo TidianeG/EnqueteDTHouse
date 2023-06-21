@@ -25,47 +25,33 @@
                                 
                             @endif
                 <div class="d-flex justify-content-between mb-3">
-                    <h4>ENQUÊTES</h4>
-                    @if(Auth::user()->roles=='admin' || Auth::user()->validateur->role->createur)
-                        <div>
-                            <a class="btn btn-success"  href="/createEnqueteXPEJJDZK89" ><i class="fa-solid fa-plus"></i> Nouvelle Enquete</a>
-                        </div>
-                    @endif
+                    <h4>Utilistaeurs</h4>
+                    <div>
+                        <a class="btn btn-success"  href="/createEnqueteXPEJJDZK89"    ><i class="fa-solid fa-plus"></i> Nouvelle Enquete</a>
+                    </div>
                 </div>
                 <div class="card" style="">
                     <div class="card-header">
-                        <h5>Liste des ENQUÊTES</h5>
+                        <h5>Liste des Utilistaeurs</h5>
                     </div>
                     <div class="card-body">
-                        <table id="datatable" class="table  table-hover table-responsive" style="width:100%">
+                        <table id="datatable" class="table table-bordered table-hover table-responsive" style="width:100%">
                             <thead>
                                 <tr>
                                     <th class="text-center">Nom</th>
-                                    <th class="text-center">Durée</th>
+                                    <th class="text-center">Téléphone</th>
+                                    <th class="text-center">Profession</th>
                                     <th class="text-center">Pays</th>
-                                    <th class="text-center">Lien enquete</th>
-                                    <th class="text-center">Type enquete</th>
-                                    <th class="text-center">Nombre Max </th>
-                                    <th class="text-center">Etat</th>
-                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($enquetes as $enquete)
+                                @foreach($clients as $client)
                                     <tr class="tr-hover">
-                                        <td class="text-center">{{$enquete->nom}}</td>
-                                        <td class="text-center">{{$enquete->duree}}</td>
-                                        <td class="text-center">{{$enquete->pays}}</td>
-                                        <td class="text-center">{{$enquete->lien_enquete}}</td>
-                                        <td class="text-center">{{$enquete->type_enquete}}</td>
-                                        <td class="text-center">{{$enquete->nombre_max_enquete}}</td>
-                                        <td class="text-center">{{$enquete->etat}}</td>
-                                        <td class="text-center d-flex justify-content-around"> 
-                                            <a href="{{route('info_detail_enquete',$enquete->id)}}" class="btn btn-primary"><i class="fa-solid fa-eye"></i></a>
-                                            @if(Auth::user()->roles=='admin' || Auth::user()->validateur->role->supprimer)
-                                                <a href="#" class="btn btn-danger"> <i class="fa fa-trash"></i></a>
-                                            @endif
-                                        </td>
+                                        <td class="text-center">{{$client->prenom  $client->nom}}</td>
+                                        <td class="text-center">{{$client->telephone}}</td>
+                                        <td class="text-center">{{$client->profession}}</td>
+                                        <td class="text-center">{{$client->pays}}</td>
+                                        
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -77,22 +63,22 @@
             </div>
         </div>
 
-        <!--Debut Modal création Enquete-->
+        <!--Debut Modal création Enquete>
             <div class="modal fade bg-theme" id="modal_create_enquete">
                 <div class="modal-dialog modal-lg ">
                     <div class="modal-content">
-                        <!-- Modal Header -->
+                        
                         <div class="modal-header">
                             <h6>Nouvelle Enquête</h6>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>                        
-                        <!-- Modal body -->
+                        
                         <div class="modal-body container">
                             <form method="post" action="{{route('saveEnqueteXPEJJDZK89')}}" id="form_register">
                                 @csrf
                                 <div class="row">
                                     <div class="form-group col-md-6">
-                                        <label for="exampleInputName" class="">Nom enquête <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
+                                        <label for="exampleInputName" class="">Nom enquête</label>
                                         <div class="position-relative has-icon-right">
                                             <input type="text" required name="nom" id="nom" class="form-control input-shadow" placeholder="Nom enquete">
                                             <div class="form-control-position">
@@ -101,7 +87,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="exampleInputName" class="">Durée de l'enquête <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
+                                        <label for="exampleInputName" class="">Durée de l'enquête</label>
                                         <div class="position-relative has-icon-right">
                                             <input type="number" required name="duree" id="duree" class="form-control input-shadow" placeholder="Durée enquete">
                                             
@@ -110,14 +96,14 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-7">
-                                        <label for="exampleInputName" class="">Prix de l’enquête <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
+                                        <label for="exampleInputName" class="">Prix de l’enquête</label>
                                         <div class="position-relative has-icon-right">
                                             <input type="number" required name="prix" id="prix" class="form-control input-shadow" >
                                             
                                         </div>
                                     </div>
                                     <div class="form-group col-md-5">
-                                        <label for="exampleInputName" class="">Lien de l’enquête <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
+                                        <label for="exampleInputName" class="">Lien de l’enquête</label>
                                         <div class="position-relative has-icon-right">
                                             <input type="url" required name="lien" id="lien" class="form-control input-shadow" >
                                             
@@ -126,7 +112,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-6">
-                                        <label for="exampleInputName" class="">Type enquête <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
+                                        <label for="exampleInputName" class="">Type enquête</label>
                                         <div class="position-relative has-icon-right">
                                             <select name="type_enquete" id="type_enquete" class="form-control input-shadow">
                                                 <option value="commerce">Commerce</option>
@@ -140,7 +126,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="exampleInputName" class="">Niveau d'étude <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
+                                        <label for="exampleInputName" class="">Niveau d'étude</label>
                                         <div class="position-relative has-icon-right">
                                             <select name="niveau_etude" id="niveau_etude" class="form-control input-shadow">
                                                 <option value="baccalaureat">Baccalauréat</option>
@@ -156,7 +142,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-6">
-                                        <label for="exampleInputName" class="">Pays <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
+                                        <label for="exampleInputName" class="">Pays</label>
                                         <div class="position-relative has-icon-right">
                                             <select name="pays" id="pays" class="form-control input-shadow">
                                                 <option value="Senegal" selected="selected">Senegal </option>
@@ -418,7 +404,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="exampleInputName" class="">Profession <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
+                                        <label for="exampleInputName" class="">Profession</label>
                                         <div class="position-relative has-icon-right">
                                             <select name="profession" id="profession" class="form-control input-shadow">
                                                 <option value="etudiant">Étudiant</option>
@@ -435,7 +421,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-4">
-                                        <label for="exampleInputName" class="">Sexe <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
+                                        <label for="exampleInputName" class="">Sexe</label>
                                         <div class="position-relative has-icon-right">
                                             <select name="sexe" id="sexe" class="form-control input-shadow">
                                                 <option value="masculin">Masculin</option>
@@ -445,7 +431,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <label for="exampleInputName" class="">Age <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
+                                        <label for="exampleInputName" class="">Age</label>
                                         <div class="position-relative has-icon-right">
                                             <select name="age" id="age" class="form-control input-shadow">
                                                 <option value="enfant">- 15 ans</option>
@@ -456,7 +442,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <label for="exampleInputName" class="">Nombres Max <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
+                                        <label for="exampleInputName" class="">Nombres Max</label>
                                         <div class="position-relative has-icon-right">
                                             <input type="number" required name="nombre_max" id="nombre_max" class="form-control input-shadow" >
                                         </div>
@@ -476,7 +462,7 @@
             </div>
 
 
-        <!--Fin Modal création Enquete compte-->
+        <Fin Modal création Enquete compte-->
             <style>
             .tr-hover:hover{
                 background-color:#fff !important;
@@ -487,11 +473,6 @@
                     background-image: linear-gradient(45deg, #29323c, #485563);
                 }
         </style>
-    <script>
-        function showDiv1() {
-            document.getElementById("div1").style.visibility = "visible";
-        }
-        setTimeout("showDiv1()", 10000); // aprés 15 sec
-    </script>
+    
 
     @endsection

@@ -1,4 +1,4 @@
-@extends('layouts.appuser')
+@extends('layouts.appadmin')
     @section('content')
     <div class="content-wrapper">
             <div class="container-fluid">
@@ -100,7 +100,7 @@
                         </div>                        
                         <!-- Modal body -->
                         <div class="modal-body container">
-                                            <form method="POST" action="{{ route('update_user_password') }}">
+                                            <form method="POST" action="">
                                                 @csrf
 
                                                 <input type="hidden" name="token" value="">

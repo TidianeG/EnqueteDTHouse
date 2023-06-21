@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Client;
+use App\Models\User;
 
 class ClientDashbordController extends Controller
 {
     public function getClients()
     {
-        $clients = Client::all();
-
-        return view('admin.users',compact('clients'));
+        $users = User::where('roles','=','user')->get();
+    
+        //dd($clients);
+        return view('admin.users',compact('users'));
     }
 }

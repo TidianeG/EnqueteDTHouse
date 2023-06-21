@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -51,7 +52,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            'prenom' => ['required', 'string', 'max:255'],
             
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -79,15 +80,56 @@ class RegisterController extends Controller
             'langue' => $data['langue'],
         ]);
         */
+        $client = new Client();
+        $client->prenom = $request->input('prenom');
+        $client->nom = $request->input('nom');
+        $client->naissance = $request->input('naissance');
+        $client->genre = $request->input('genre');
+        $client->telephone = $request->input('phone');
+        $client->pays = $request->input('pays');
+        $client->langue = $request->input('langue');
+        $client->niveau_etude = $request->input('niveau_etude');
+        $client->profession = $request->input('profession');
+        //dd($client);
+        $client->save();
+        
+        if($client){
             return User::create([
-                'name' => $data['name'],
+                'name' => $data['prenom'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
                 'roles' => 'user',
+                'client_id'=> $client->id,
+                'email_verified' => 0,
             ]);
-        
-        
+        }
 
-        
+        $message = 'Bonjour ';
+        $message.='Merci pour votre inscription, nous vous demandons de verifier votre adresse mail pour completer votre inscription.';
+        $verifyURL='google.com';
+        $email_data = [
+            'recipient'=>'gaye95ahmeth@outlook.com',
+            'fromEmail'=>'gaye95ahmeth@gmail.com',
+            'fromName'=>'Cheikh',
+            'subject'=>'Email verification',
+            'body'=>$message,
+            'actionLink'=>$verifyURL,
+        ];
+
+        Mail::send('email_template', $email_data, function($message) use ($email_data)
+        {
+            $message->to($email_data['recipient'])
+                    ->from($email_data['fromEmail'], $email_data['fromName'])
+                    ->subject($email_data['subject']);
+        });
+
+        if ($save) {
+            return redirect()->back()->with(['success' => "Verifier votre compte nous vous avons envoyé un lin d'activation"]);
+        }
+
+        else {
+            return redirect()->back()->with(['error' => "Erreur d'inscripion"]);
+        }
+      
     }
 }

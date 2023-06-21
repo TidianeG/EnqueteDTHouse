@@ -24,6 +24,10 @@
   <script src="{{asset('js/pace.min.js')}}"></script>
   <!--favicon-->
   <link rel="icon" href="{{asset('images/favicon.ico')}}" type="image/x-icon">
+  <!-- simplebar CSS-->
+  <link href="{{asset('plugins/simplebar/css/simplebar.css')}}" rel="stylesheet"/>
+  <!-- Bootstrap core CSS-->
+  <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet"/>
   <link
      rel="stylesheet"
      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"
@@ -32,10 +36,7 @@
      rel="stylesheet"
      href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"
    />
-  <!-- simplebar CSS-->
-  <link href="{{asset('plugins/simplebar/css/simplebar.css')}}" rel="stylesheet"/>
-  <!-- Bootstrap core CSS-->
-  <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet"/>
+  
   <!-- animate CSS-->
   <link href="{{asset('css/animate.css')}}" rel="stylesheet" type="text/css"/>
   <!-- Icons CSS-->
@@ -135,13 +136,8 @@
                 <ul class="navbar-nav align-items-center right-nav-link">
                     
                     <li class="nav-item language">
-                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown" href="javascript:void();"><i class="fa fa-flag"></i></a>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li class="dropdown-item"> <i class="flag-icon flag-icon-gb mr-2"></i> English</li>
-                            <li class="dropdown-item"> <i class="flag-icon flag-icon-fr mr-2"></i> French</li>
-                            <li class="dropdown-item"> <i class="flag-icon flag-icon-cn mr-2"></i> Chinese</li>
-                            <li class="dropdown-item"> <i class="flag-icon flag-icon-de mr-2"></i> German</li>
-                        </ul>
+                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown" href="javascript:void();">Solde: <b class="mr-2">9000</b><i class="fa fa-eye"></i></a>
+                        
                     </li>
                     <li class="nav-item">
                         <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">

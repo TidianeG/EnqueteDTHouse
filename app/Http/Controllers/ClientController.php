@@ -11,11 +11,28 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+
 class ClientController extends Controller
 {
     public function createClient(Request $request)
     {
+        $validated = $request->validate([
+            'email' => 'required|max:255',
+            'phone' => 'required',
+        ]);
+
+        $verif_phone = Client::where('telephone', '=',$request->phone)->first();
+        $verif_email = User::where('email', '=',$request->email)->first();
         
+        // On verifie si le numéro de téléphone ajouté existe dans la base
+        if($verif_phone){
+            return redirect()->back()->with(['error' => "Le numéro de téléphone est dèja utilisé"]);
+        }
+        // On verifie si l'Email ajouté existe dans la base
+        elseif ($verif_email) {
+            return redirect()->back()->with(['error' => "L'adresse mail est dèja utiisé"]);
+        }
+
         $client = new Client();
         $client->prenom = $request->input('prenom');
         $client->nom = $request->input('nom');
@@ -27,7 +44,7 @@ class ClientController extends Controller
         $client->niveau_etude = $request->input('niveau_etude');
         $client->profession = $request->input('profession');
         //dd($client);
-        $client->save();
+        
 
         $user= new User();
 
@@ -37,13 +54,16 @@ class ClientController extends Controller
                 $user->password= Hash::make($request->input('password'));
                 
                 $user->roles= $user_val;
-                $user->client_id= $client->id;
+                
                 $user->email_verified = 0;
             $save = $user->save();
 
+            $client->user_id= $user->id;
+            $client->save();
+
             $last_id = $user->id;
             $token = $last_id.hash('sha256', Str::random(120));
-            $verifyURL = route('verify', ['token'=>$token, 'service'=>'Email_verification']);
+            $verifyURL = route('verify', ['token'=>$token]);
 
             VerifyUser::create([
                 'user_id'=>$last_id,
@@ -55,28 +75,29 @@ class ClientController extends Controller
 
             $email_data = [
                 'recipient'=>$request->email,
-                'fromEmail'=>$request->email,
-                'fromName'=>$request->name,
+                'fromEmail'=>'gaye95ahmeth@outlook.com',
+                'fromName'=>'Enquete DThouse',
                 'subject'=>'Email verification',
                 'body'=>$message,
                 'actionLink'=>$verifyURL,
+                'token' =>$token,
             ];
 
-            /*Mail::send('email_template', $email_data, function($message) use ($email_data)
+            Mail::send('email_template', $email_data, function($message) use ($email_data)
             {
                 $message->to($email_data['recipient'])
                         ->from($email_data['fromEmail'], $email_data['fromName'])
                         ->subject($email_data['subject']);
-            });*/
+            });
 
             if ($save) {
-                return redirect()->back()->with(['success' => "Verifier votre compte nous vous avons envoyé un lin d'activation"]);
+                return redirect()->back()->with(['success' => "Compte créé. Verifier votre compte nous vous avons envoyé un lin d'activation"]);
             }
 
             else {
                 return redirect()->back()->with(['error' => "Erreur d'inscripion"]);
             }
-
+        //return redirect()->back()->with(['error' => "Erreur d'inscripion"]);
             
     }
 
@@ -95,31 +116,88 @@ class ClientController extends Controller
         return redirect()->back()->with('status','Client modifié avec succès!!');
     }
 
-    public function verify(Request $request)
+    public function update_user_email(Request $request)
     {
-        $token = $request->token;
-        $verifyUser = VerifyUser::where('token',$token)->first();
-        if (!is_null($verifyUser)) {
-            $user = $verifyUser->user;
-            if (!$user->email_verified) {
-                $verifyUser->user->email_verified = 1;
-                $verifyUser->user->save();
+        $new_email = $request->input('new_email');
 
-                return redirect()->route('login')->with('info','Votre email a été vérifier avec succee. Vous pouvez vous connecter')->with('verifiedEmail', $user->email);
-                
-            } else {
-                return redirect()->route('login')->with('info','Votre email deja verifier. Vous pouvez vous connecter')->with('verifiedEmail', $user->email);
+        $user=Auth::user();
+        
+        $user_verif= User::where('email', '=', $new_email)->first();
+        //dd($user_verif);
+        if (!$user_verif) {
+            $user->email = $new_email;
+            $user->save();
+            if($user){
+                return redirect()->back()->with('status','Email modifié avec succès!!');
             }
-            
-        } 
+
+            else {
+                return redirect()->back()->with('failed','Erreur lors de la mise à jour de l\'Email');
+            }
+        }
+
+        else {
+            return redirect()->back()->with('failed','L\'Email renseigné est déja lié à un compte');
+        }
         
     }
 
+    public function update_user_password(Request $request)
+        {
+            $curr_password = $request->input('password_old');
+            $new_password  = $request->input('password_new');
+            $confirm_password  = $request->input('password_confirmation');
+
+
+            if(!Hash::check($curr_password,Auth::user()->password)){
+                return redirect()->back()->with('failed','Erreur lors de la mise à jour du mot de passe');
+            }
+            else{
+                $user=Auth::user();
+                $user->password = Hash::make($new_password);
+                $user->save();
+                //$request->user()->fill(['password' => Hash::make($new_password)])->save;
+                return redirect()->back()->with('status','Mot de passe modifié avec succès!!');
+
+            } 
+        }
+
+    public function verify($token)
+        {
+            $verifyUser = VerifyUser::where('token', $token)->first();
+            
+            if (!is_null($verifyUser)) {
+                $user = $verifyUser->user;
+                if (!$user->email_verified) {
+                    $verifyUser->user->email_verified = 1;
+                    $verifyUser->user->save();
+
+                    return redirect()->route('login')->with('info','Votre email a été vérifier avec succè. Vous pouvez vous connecter')->with('verifiedEmail', $user->email);
+                    
+                } else {
+                    return redirect()->route('login')->with('error','Votre email est déja verifier. Vous pouvez vous connecter')->with('verifiedEmail', $user->email);
+                }
+                
+            } 
+            return redirect()->route('login')->with('error','Votre email est déja verifier. Vous pouvez vous connecter')->with('verifiedEmail', $user->email);
+            
+        }
+
     public function get_info_profil()
     {
-        $user_id= Auth::user()->client_id;
-        $client = Client::find($user_id);
+        $user_id= Auth::user()->client;
+        $client = $user_id;
         //dd($client);
         return view('users.profile',compact('client'));
+    }
+
+    public function delete_account(Request $request)
+    {
+        $user=Auth::user();
+        $user->email_verified=0;
+        $user->save();
+        
+        Auth::logout();
+        return redirect('/login');
     }
 }

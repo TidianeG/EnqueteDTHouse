@@ -16,4 +16,9 @@ class Enquete extends Model
     {
         return $this->belongsTo('App\Models\Profession');
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }

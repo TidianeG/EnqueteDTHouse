@@ -27,6 +27,7 @@ class CreateEnquetesTable extends Migration
             $table->string('etat');
             $table->string('pays');
             $table->string('profession');
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }

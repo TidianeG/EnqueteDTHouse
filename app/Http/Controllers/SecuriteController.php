@@ -10,4 +10,9 @@ class SecuriteController extends Controller
     {
         return view('users.securite');
     }
+
+    public function get_securite_admin()
+    {
+        return view('admin.securite');
+    }
 }

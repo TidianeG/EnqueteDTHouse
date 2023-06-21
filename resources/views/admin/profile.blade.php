@@ -1,96 +1,132 @@
-@extends('layouts.app')
+@extends('layouts.appadmin')
 
-@section('content')
-
-<!-- start loader -->
-<div id="pageloader-overlay" class="visible incoming"><div class="loader-wrapper-outer"><div class="loader-wrapper-inner" ><div class="loader"></div></div></div></div>
-   <!-- end loader -->
-
-<!-- Start wrapper-->
-<div id="wrapper">
-
-	<div class="card card-authentication1 mx-auto my-4" style="width: 40rem;">
-		<div class="card-body">
-
-		    <div class="card-content p-2">
-                    @if (session('success'))
-                        <div class="alert alert-success p-3">{{ session('success') }}</div>
-                    @endif        
-
-                    @if (session('error'))
-                        <div class="alert alert-danger p-3">{{ session('error') }}</div>
-                    @endif
-                <div class="text-center">
-                    <img src="{{asset('images/logo2.png')}}" alt="logo icon">
+    @section('content')
+    <div class="clearfix"></div>
+	
+    <div class="content-wrapper">
+      <div class="container-fluid">
+        @if (session('status'))
+            <h6 class="alert alert-success">{{ session('status') }}</h6>
+        @endif
+        <div class="row mt-3">
+            <div class="col-lg-4">
+                <div class="card profile-card-2">
+                    <div class="card-img-block">
+                        <img class="img-fluid" src="https://via.placeholder.com/800x500" alt="Card image cap">
+                    </div>
+                    <div class="card-body pt-5">
+                        <img src="{{asset('images/logo1.png')}}" style="background-color:white;" alt="profile-image" class="profile">
+                        <h5 class="card-title">{{$validateur->prenom}} {{$validateur->nom}}</h5>
+                        <p class="card-text">.</p>
+                        <div class="icon-block">
+                            <a href="javascript:void();"><i class="fa fa-facebook bg-facebook text-white"></i></a>
+                            <a href="javascript:void();"> <i class="fa fa-twitter bg-twitter text-white"></i></a>
+                            <a href="javascript:void();"> <i class="fa fa-google-plus bg-google-plus text-white"></i></a>
+                        </div>
+                    </div>
+    
                 </div>
-                <div class="card-title text-uppercase text-center py-3">S'inscrire</div>
-                <form method="post" action="{{route('registere')}}" id="form_register">
-                    @csrf
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label for="exampleInputName" class="">Prénom <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
-                            <div class="position-relative has-icon-right">
-                                <input type="text" required name="prenom" id="exampleInputName" class="form-control input-shadow" placeholder="Enter votre nom">
-                                <div class="form-control-position">
-                                    <i class="icon-user"></i>
-                                </div>
+    
+            </div>
+  
+          <div class="col-lg-8">
+             <div class="card">
+              <div class="card-body">
+              <ul class="nav nav-tabs nav-tabs-primary top-icon nav-justified">
+                  <li class="nav-item">
+                      <a href="javascript:void();" data-target="#profile" data-toggle="pill" class="nav-link active"><i class="icon-user"></i> <span class="hidden-xs">Profile</span></a>
+                  </li>
+                 
+                  <li class="nav-item">
+                      <a href="javascript:void();" data-target="#edit" data-toggle="pill" class="nav-link"><i class="icon-note"></i> <span class="hidden-xs">Edit</span></a>
+                  </li>
+              </ul>
+              <div class="tab-content p-3">
+                  <div class="tab-pane active" id="profile">
+                      <h5 class="mb-3">Profil Super utilisateur</h5>
+                      <div class="row">
+                          
+                          <div class="col-md-12">
+                              
+                               <div class="table">
+                              <table class="table table-hover">
+                                  <tbody>                                    
+                                      <tr class="row">
+                                          <td class="col-sm-7">
+                                              Prénom & Nom
+                                          </td>
+                                          <td class="col-sm-5">
+                                              <strong>{{$validateur->prenom}} {{$validateur->nom}}</strong>
+                                          </td>
+                                      </tr>
+                                      <tr class="row">
+                                          <td class="col-sm-7">
+                                              Date de naissance
+                                          </td>
+                                          <td class="col-sm-5">
+                                              <strong>{{$validateur->naissance}}</strong>
+                                          </td>
+                                      </tr>
+                                      <tr class="row">
+                                          <td class="col-sm-7">
+                                              Pays dans lequel vous vous trouvez
+                                          </td>
+                                          <td class="col-sm-5">
+                                              <strong>{{$validateur->pays}} </strong>
+                                          </td>
+                                      </tr>
+                                      <tr class="row">
+                                          <td class="col-sm-7">
+                                              Langue que vous parlez
+                                          </td>
+                                          <td class="col-sm-5">
+                                              <strong>{{$validateur->langue}}</strong>
+                                          </td>
+                                      </tr>
+                                      <tr class="row">
+                                          <td class="col-sm-7">
+                                              Numéro de téléphone
+                                          </td>
+                                          <td class="col-sm-5">
+                                              <strong>{{$validateur->telephone}} </strong>
+                                          </td>
+                                      </tr>
+                                  </tbody>
+                              </table>
                             </div>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="exampleInputName" class="">Nom <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
-                            <div class="position-relative has-icon-right">
-                                <input type="text" required name="nom" id="name" class="form-control input-shadow" placeholder="Enter voter prénom">
-                                <div class="form-control-position">
-                                    <i class="icon-user"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-7">
-                            <label for="exampleInputName" class="">Date de Naissance <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
-                            <div class="position-relative has-icon-right">
-                                <input type="date" required name="naissance" id="naissance" class="form-control input-shadow" >
-                                
-                            </div>
-                        </div>
-                        <div class="form-group col-md-5">
-                            <label for="exampleInputName" class="">Genre <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
-                            <div class="position-relative has-icon-right">
-                                
-                                <select name="genre" id="genre" class="form-control input-shadow">
-                                    <option value="masculin">Masculin</option>
-                                    <option value="feminin">Feminin</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label for="exampleInputName" class="">Email <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
-                            <div class="position-relative has-icon-right">
-                                <input type="email" required name="email" id="email" class="form-control input-shadow" placeholder="Entrer votre mail">
-                                <div class="form-control-position">
-                                    <i class="icon-email"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="exampleInputName" class="">Téléphone <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
-                            <div class="position-relative has-icon-right">
-                                <input type="tel" required name="phone" id="phone" class="form-control input-shadow" >
-                                <div class="form-control-position">
-                                    <i class="icon-phone"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label for="exampleInputName" class="">Pays <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
-                            <div class="position-relative has-icon-right">
-                                <select name="pays" id="pays" class="form-control input-shadow">
-                                    <option value="Senegal" selected="selected">Senegal </option>
+                          </div>
+                      </div>
+                      <!--/row-->
+                  </div>
+                  <div class="tab-pane" id="edit">
+                      <form action="#" method="post">
+                        @csrf
+                        @method('PATCH')
+                          <div class="form-group row">
+                              <label class="col-lg-4 col-form-label form-control-label">Prénom</label>
+                              <div class="col-lg-8">
+                                  <input class="form-control" type="text" id="prenom_edit" name="prenom_edit" value="{{$validateur->prenom}}" required>
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label class="col-lg-4 col-form-label form-control-label">Nom</label>
+                              <div class="col-lg-8">
+                                  <input class="form-control" type="text" name="nom_edit" value="{{$validateur->nom}}" required>
+                              </div>
+                          </div>
+                          
+                          <div class="form-group row">
+                              <label class="col-lg-4 col-form-label form-control-label">Date de naissance</label>
+                              <div class="col-lg-8">
+                                  <input class="form-control" type="date" name="naissance_edit" value="{{$validateur->naissance}}" required>
+                              </div>
+                          </div>
+                          
+                          <div class="form-group row">
+                              <label class="col-lg-4 col-form-label form-control-label">Pays</label>
+                              <div class="col-lg-8">
+                                <select name="pays_edit"   id="pays" class="form-control input-shadow">
+                                    <option value="{{$validateur->pays}}" selected hidden>{{$validateur->pays}} </option>
 
                                     <option value="Afghanistan">Afghanistan </option>
                                     <option value="Afrique_Centrale">Afrique_Centrale </option>
@@ -346,119 +382,65 @@
                                     <option value="Zimbabwe">Zimbabwe </option>
 
                                 </select>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="exampleInputName" class="">Langue <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
-                            <div class="position-relative has-icon-right">
-                                <select name="langue" id="langue" class="form-control input-shadow">
-                                    <option value="Francais">Francais</option>
-                                    <option value="English">English</option>
+                              </div>
+                          </div>
+                          
+                         
+                          <div class="form-group row">
+                              <label class="col-lg-4 col-form-label form-control-label">Langue</label>
+                              <div class="col-lg-8">
+                                <select name="langue_edit" value="{{$validateur->langue}}" id="langue" class="form-control input-shadow">
+                                <option value="English">English</option>    
+                                <option value="Francais">Francais</option>
+                                <option value="{{$validateur->langue}}" selected hidden>{{$validateur->langue}}</option>
                                     
                                 </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label for="exampleInputName" class="">Profession <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
-                            <div class="position-relative has-icon-right">
-                                <select name="profession" id="profession" class="form-control input-shadow">
-                                    <option value="etudiant">Étudiant</option>
-                                    <option value="eleve">Élève</option>
-                                    <option value="ingenieur">Ingénieur</option>
-                                    <option value="infirmier">Infirmier</option>
-                                    <option value="medecin">Médecin</option>
-                                    <option value="geologue">Géologue</option>
-                                    <option value="ouvrier">Ouvrier</option>
-                                    <option value="autre">Autre</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="exampleInputName" class="">Niveau d'étude <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
-                            <div class="position-relative has-icon-right">
-                                <select name="niveau_etude" id="niveau_etude" class="form-control input-shadow">
-                                    <option value="baccalaureat">Baccalauréat</option>
-                                    <option value="Bac+2">Bac+2</option>
-                                    <option value="Bac+3">Bac+3</option>
-                                    <option value="Master">Master</option>
-                                    <option value="Doctorat">Doctorat</option>
-                                    <option value="autre">Autre</option>
-                                </select>
-                                          
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label for="exampleInputName" class="">Mot de passe <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
-                            <div class="position-relative has-icon-right">
-                                <input type="password" required name="password" id="password" class="form-control input-shadow" placeholder="mot de passe">
-                                <div class="form-control-position">
-                                    <i class="icon-lock"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="exampleInputName" class="">Cofirmer mot de passe <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
-                            <div class="position-relative has-icon-right">
-                                <input type="password" required name="confirm_password" id="confirm_password" class="form-control input-shadow" placeholder="confirmer votre mot passe">
-                                <div class="form-control-position">
-                                    <i class="icon-lock"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                
-                    <div class="form-group">
-                        <div class="icheck-material-white">
-                            <input type="checkbox" required id="user-checkbox" checked="" />
-                            <label for="user-checkbox">J'accepte les Termes & Conditions <span style="color:red;font-weight:bold;font-size:14px;">*</span></label>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-light btn-block waves-effect waves-light" style="width: 50%;">S'inscrire</button>
-                    </div>
-                    <div class="text-center mt-3">S'inscrire avec</div>
-                
-                    <div class="form-row mt-4">
-                        <div class="form-group mb-0 col-6">
-                            <button type="button" class="btn btn-light btn-block"><i class="fa fa-facebook-square"></i> Facebook</button>
-                        </div>
-                        <div class="form-group mb-0 col-6 text-right">
-                            <button type="button" class="btn btn-light btn-block"><i class="fa fa-twitter-square"></i> Twitter</button>
-                        </div>
-                    </div>
-                
-                </form>
-		    </div>
-		</div>
-		<div class="card-footer text-center py-3">
-		    <p class="text-warning mb-0">Vous avez un compte? <a href="{{route('login')}}"> Se connecter ici</a></p>
-		</div>
-	</div>
-    
-     <!--Start Back To Top Button-->
-    <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
-    <!--End Back To Top Button-->
-	
-    
-	<script>
-        const phoneInputField = document.querySelector("#phone");
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label class="col-lg-4 col-form-label form-control-label">Numéro Telephone</label>
+                              <div class="col-lg-8">
+                                <input type="tel" required name="phone_edit" id="phone_edit" value="{{$validateur->telephone}}" class="form-control input-shadow" >
+                              </div>
+                          </div>
+                          
+                          <div class="form-group row">
+                              <label class="col-lg- col-form-label form-control-label"></label>
+                              <div class="col-lg-9">
+                                  <input type="reset" class="btn btn-secondary" value="Cancel">
+                                  <input type="submit" class="btn btn-primary" value="Enregistrer changements">
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+        </div>
+        </div>
+          
+      </div>
+  
+      <!--start overlay-->
+            <div class="overlay toggle-menu"></div>
+          <!--end overlay-->
+      
+      </div>
+      <!-- End container-fluid-->
+     </div><!--End content-wrapper-->
+     <script>
+        const phoneInputField = document.querySelector("#phoneT");
         const phoneInput = window.intlTelInput(phoneInputField, {
-            utilsScript:"https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+            utilsScript:
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
 
-        document.getElementById('form_register').addEventListener('submit',function(event){
+        /*document.getElementById('form_register').addEventListener('submit',function(event){
             event.preventDefault();
             const phoneNumber = phoneInput.getNumber();
             phoneInputField.value=phoneNumber;
             document.getElementById('form_register').submit();
-        });
+        });*/
         
     </script>
-	
-</div><!--wrapper-->
 
-@endsection
+    @endsection

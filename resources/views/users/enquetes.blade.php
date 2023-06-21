@@ -23,7 +23,7 @@
                                     <tr>
                                         <td class="text-center">{{$enquete->duree}}</td>
                                         <td class="text-center">{{$enquete->prix}}</td>
-                                        <td class="text-center"><a href="{{$enquete->lien_enquete}}" class="btn btn-success">Commencer l’enquête</a></td>
+                                        <td class="text-center"><a href="{{$enquete->lien_enquete}}" target="_blank" class="btn btn-success">Commencer l’enquête</a></td>
                                         
                                     </tr>
                                 @endforeach

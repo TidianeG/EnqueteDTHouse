@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -45,11 +45,20 @@ class User extends Authenticatable
 
     public function client()
     {
-        return $this->belongsTo('App\Models\Client');
+        return $this->hasOne(Client::class, 'user_id');
+    }
+
+    public function validateur()
+    {
+        return $this->hasOne(Validateur::class, 'user_id');
     }
 
     public function verifyuser()
     {
         return $this->hasMany(VerifyUser::class);
+    }
+    public function enquete()
+    {
+        return $this->hasMany(Enquete::class);
     }
 }

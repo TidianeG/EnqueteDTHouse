@@ -20,10 +20,9 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('roles');
-            $table->unsignedInteger('client_id')->nullable(true);
-            
+            $table->foreignId('client_id')->nullable(true);
             $table->rememberToken();
-            $table->integer('email_verified');
+            $table->integer('email_verified')->default(0);
             $table->timestamps();
         });
     }

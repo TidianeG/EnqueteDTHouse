@@ -5,9 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-class IsAdmin
+class CheckBanned
 {
-    
     /**
      * Handle an incoming request.
      *
@@ -15,14 +14,18 @@ class IsAdmin
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user() &&  Auth::user()->roles == 'admin' || Auth::user()->roles == 'superuser') {
-            return $next($request);
-        }
+        if(auth()->check() && (auth()->user()->email_verified == 0)){
+            Auth::logout();
 
-        return redirect('login')->with('error','Vous avez pas les droits d\'admin');
-        
+            $request->session()->invalidate();
+
+            $request->session()->regenerateToken();
+
+            return redirect()->route('login')->with('error', 'Merci de vérifier votre mail. Un email contenant un lien d\'activation vous a été envoyer. ');
+
+        }
+        return $next($request);
     }
 }

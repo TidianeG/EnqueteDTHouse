@@ -5,13 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Client extends Model
+class Roles extends Model
 {
-
     use HasFactory;
-    public function user() 
+    public function validateur() 
     {
-        return $this->belongsTo(User::class, 'client_id');
+        return $this->belongsTo(Validateur::class, 'role_id');
     }
-
 }
